@@ -111,16 +111,10 @@ function draw() {
     textAlign(CENTER);
 
     fill(0, 0, 0);
-    
     textSize(60);
     text("Game Over", width / 2, height / 2 - 40);
-
     textSize(36);
-    text("Score: " + score, width / 2, height / 2 + 20)
-    
-    
-
-    
+    text("Score: " + score, width / 2, height / 2 + 20)  
   }
 
 }
@@ -131,6 +125,7 @@ function keyPressed() {
 }
 
 function mousePressed() {
+  // This adds functionality to the "begin!" button for the home scene. By checking that the mouse is clicked within the button parameters.
   if (gameState === "home" && mouseX > width / 2 -75 && mouseX < width / 2+75 && mouseY > height / 2 +100 && mouseY < height / 2 +160) {
     gameState = "playing";
   } 
@@ -210,9 +205,8 @@ class Pipe {
   offscreen() {
     return this.x + this.w < 0;
   }
-  
+
   hits(bird) {
-    // This method also uses 'return' — coming up next week!
      const withinX = (bird.pos.x + bird.r > this.x) && (bird.pos.x - bird.r < this.x + this.w);
      const aboveGap = bird.pos.y - bird.r < this.top;
      const belowGap = bird.pos.y + bird.r > this.bottom;

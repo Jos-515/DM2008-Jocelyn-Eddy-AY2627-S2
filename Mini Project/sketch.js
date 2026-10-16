@@ -1,11 +1,8 @@
 // DM2008 — Mini Project
 // FLAPPY BIRD (Starter Scaffold)
-//
-// Complete this scaffold into a playable game.
-// Your game should have player control, collision detection,
-// score tracking, and at least two game states.
 
-// 5. Add game states — at minimum a playing state and a game over state
+// Alice's Adventures as Flappy Bird
+// Jocelyn Eddy
 
 // Stretch: add a start screen, a high score, or a difficulty curve.   
 
@@ -211,14 +208,9 @@ class Pipe {
   }
 
   offscreen() {
-    // 'return' sends a value back to wherever this method was called
-    // We'll cover this properly next week, for now just know it gives back true or false
     return this.x + this.w < 0;
   }
-
-  // Checks if the bird overlaps with either pipe rectangle
-  // 1) Is the bird within the pipe's x range?
-  // 2) If yes, is it outside the gap — above the top or below the bottom?
+  
   hits(bird) {
     // This method also uses 'return' — coming up next week!
      const withinX = (bird.pos.x + bird.r > this.x) && (bird.pos.x - bird.r < this.x + this.w);

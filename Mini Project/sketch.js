@@ -5,8 +5,6 @@
 // Your game should have player control, collision detection,
 // score tracking, and at least two game states.
 
-// 3. Add collision detection between the bird and pipes
-// 4. Add scoring when the bird passes a pipe
 // 5. Add game states — at minimum a playing state and a game over state
 
 // Stretch: add a start screen, a high score, or a difficulty curve.   
@@ -16,6 +14,11 @@ let bird;
 let pipes = [];
 let score = 0;
 let spawnCounter = 0;
+let backgroundImage;
+let aliceFont;
+let BGMusic;
+let buttonImage;
+let AliceFlappyBird;
 
 const SPAWN_RATE = 90;
 const PIPE_SPEED = 2.5;
@@ -23,23 +26,58 @@ const PIPE_GAP = 120;
 const PIPE_W = 60;
 
 // Game states: "playing" or "gameover" — add more if you need them
-let gameState = "playing";
-
+let gameState = "home";
 
 /* ----------------- Setup & Draw ----------------- */
-function setup() {
+async function setup() {
   createCanvas(480, 640);
   noStroke();
-  bird = new Bird(20, height / 2);
-  pipes.push(new Pipe(width + 40));
 
+  AliceFlappyBird = await loadImage("Assets/AliceFlappyBird.png")
+  bird = new Bird(20, height / 2, AliceFlappyBird);
+  pipes.push(new Pipe(width + 40));
+  backgroundImage = await loadImage("Assets/background.jpg");
+  buttonImage = await loadImage("Assets/button.png");
+  aliceFont = await loadFont("Assets/Alice.ttf");
+  // Music for Playing and Home States
+  BGMusic = new Audio("Assets/BGMusic.mp3");
+  BGMusic.loop = true;
+  BGMusic.volume = 0.4;
+  // Music for GameOver States
+  gameOverMusic = new Audio("Assets/gameOverMusic.mp3");
+  gameOverMusic.loop = true;
+  gameOverMusic.volume = 0.4;
 }
 
 function draw() {
-  background(18, 22, 28);
+  if (backgroundImage) {
+    image(backgroundImage, 0, 0, width, height);
+  } else {
+    background(18, 22, 28);
+  }
+
+  if (gameState === "home") { 
+    BGMusic.play();
+    textFont(aliceFont);
+    textSize(60);
+    text("Alice's Adventures", width / 2, height / 2 - 40);
+    text("As Flappy Bird", width / 2, height / 2 );
+    textAlign(CENTER);
+
+    image(buttonImage, width / 2-75, height / 2 + 100, 150, 60);
+    textSize(36);
+    text("begin!", width / 2, height / 2 +140);
+    
+  }
 
   if (gameState === "playing") {
+    BGMusic.play();
     bird.update();
+    fill(0,0,0)
+    textFont(aliceFont);
+    textSize(24);
+    textAlign(CENTER);
+    text("Score: " + score, 60, 40); 
 
     // Spawn a new pipe every SPAWN_RATE frames, then reset the counter
     spawnCounter++;
@@ -54,11 +92,10 @@ function draw() {
 
       // When the bird hits a pipe, trigger game over
       if (pipes[i].hits(bird)) {
-        // What should happen when the game ends?
+        gameState = "gameover";
       }
 
-      // When the bird passes a pipe, increment the score
-      // Hint: use pipes[i].passed to make sure you only score once per pipe
+      
       if (!pipes[i].passed && pipes[i].x + pipes[i].w < bird.pos.x) {
         score = score + 1;
         pipes[i].passed = true;
@@ -69,29 +106,47 @@ function draw() {
       }
     }
 
-    bird.show();
-
-    // Display the score — look up textAlign() and textSize() in the p5.js reference
+    bird.show();  
   }
 
   if (gameState === "gameover") {
-    // What should the player see when the game ends?
-    // How do they restart?
+    gameOverMusic.play();
+    textAlign(CENTER);
+
+    fill(0, 0, 0);
+    
+    textSize(60);
+    text("Game Over", width / 2, height / 2 - 40);
+
+    textSize(36);
+    text("Score: " + score, width / 2, height / 2 + 20)
+    
+    
+
+    
   }
+
 }
 
 /* ----------------- Input ----------------- */
 function keyPressed() {
-  space = bird.flap();
+  if (gameState === "playing") space = bird.flap();
+}
+
+function mousePressed() {
+  if (gameState === "home" && mouseX > width / 2 -75 && mouseX < width / 2+75 && mouseY > height / 2 +100 && mouseY < height / 2 +160) {
+    gameState = "playing";
+  } 
 }
 
 /* ----------------- Classes ----------------- */
 class Bird {
-  constructor(x, y) {
+  constructor(x, y, img) {
     this.pos = createVector(x, y);
     this.vel = createVector(0, 0);
     this.acc = createVector(0, 0);
-    this.r = 16;
+    this.r = 30;
+    this.img = img;
     this.gravity = 0.45;
     this.flapStrength = -8.0;
   }
@@ -125,10 +180,9 @@ class Bird {
   }
 
   show() {
-    fill(255, 205, 80);
-    circle(this.pos.x, this.pos.y, this.r * 2);
-    fill(40);
-    circle(this.pos.x + 6, this.pos.y - 4, 4);
+    imageMode(CENTER);
+    image(this.img, this.pos.x, this.pos.y, this.r * 2, this.r * 2);
+    imageMode(CORNER);
   }
 }
 

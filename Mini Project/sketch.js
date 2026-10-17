@@ -16,11 +16,14 @@ let aliceFont;
 let BGMusic;
 let buttonImage;
 let AliceFlappyBird;
+let brickImage;
 
 const SPAWN_RATE = 90;
 const PIPE_SPEED = 2.5;
-const PIPE_GAP = 120;
+const PIPE_GAP = 160;
 const PIPE_W = 60;
+
+
 
 // Game states: "playing" or "gameover" — add more if you need them
 let gameState = "home";
@@ -35,6 +38,7 @@ async function setup() {
   pipes.push(new Pipe(width + 40));
   backgroundImage = await loadImage("Assets/background.jpg");
   buttonImage = await loadImage("Assets/button.png");
+  brickImage = await loadImage("Assets/brick.png");
   aliceFont = await loadFont("Assets/Alice.ttf");
   // Music for Playing and Home States
   BGMusic = new Audio("Assets/BGMusic.mp3");
@@ -200,7 +204,26 @@ class Pipe {
     fill(120, 200, 160);
     rect(this.x, 0, this.w, this.top);
     rect(this.x, this.bottom, this.w, height - this.bottom);
+
+    this.showBricks(this.x, 0, this.w, this.top);
+    this.showBricks(this.x, this.bottom, this.w, height - this.bottom);
   }
+
+  showBricks(x, y, w, h) {
+    drawingContext.save();
+    drawingContext.beginPath();
+    drawingContext.rect(x, y, w, h);
+    drawingContext.clip();
+
+    for (let i = y; i < y + h; i += w) {
+  
+        image(brickImage, x, i, w, w);
+
+    }
+
+    drawingContext.restore();
+  }
+    
 
   offscreen() {
     return this.x + this.w < 0;

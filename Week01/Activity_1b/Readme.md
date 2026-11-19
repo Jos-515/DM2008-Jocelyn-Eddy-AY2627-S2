@@ -1,0 +1,1 @@
+To modify the George Nees template, I decided to go with a Art Nouveu influenced colour palette, drawing on natural earthy tones. Therefore instead of empty outlined squares, I made filled circles. The circles also reflected the nature influences of the art nouveu period; the circular organic form. 

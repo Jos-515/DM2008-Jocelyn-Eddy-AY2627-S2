@@ -25,4 +25,6 @@ _Rename the main folder when you duplicate this for your own projects!_
 
 Document your project here: what it does, what sensor you used, and how the data maps to the visual.
 
+We chose an ultraonic sensor as the user input, the shorter the distance to the sensor the warmer colour the square is. Whereas the background is the opposite of the square. Additionally the square gets bigger when the user is closer emphasising the change in distance.  
+
 ---

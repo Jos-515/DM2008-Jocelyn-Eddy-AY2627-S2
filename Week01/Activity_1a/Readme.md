@@ -1,1 +1,0 @@
-For this weeks activity, I chose to recreate my cat Billy in geometric form. The most difficult aspect was alligning the white triangles on the bottom of the face so that it made the cat look more rounded and lifelike. To improve it, I would also change the eyes to green and create a body for the cat. It could be interesting for the tail to move back and forth aswell. 

@@ -1,0 +1,1 @@
+This week we mapped an ultrasonic sensor to an LED, as the distance from the sensor decreased the LED got brighter, appearing like a warning sign. Dramatically alerting the user to how close they are. 
